@@ -1,18 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const User = require("../models/User");
+const { updateUser, deleteUser, getUser, getUsers} = require('../controllers/user');
+const {verifyToken, verifyUser, verifyAdmin} = require('../utils/verifyToken');
 
-router.post('/', async (req, res, next) => {
-    // const newUser = new User(req.body);
+// router.get("/checkauthentication", verifyToken, (req, res) => {
+//     res.status(200).json({ success: true });
+// });
 
-    // try {
-    //     const savedUser = await newUser.save();
-    //     res.status(200).json(savedUser);
-    // }
-    // catch (err) {
-    //     next(err);
-    // }
+// router.get("/checkuser/:id", verifyUser, (req, res) => {
+//     res.status(200).json({ success: true });
+// });
 
-});
+// router.get("/checkadmin/:id", verifyAdmin, (req, res) => {
+//     res.status(200).json({ success: true });
+// });
+
+router.put('/:id', verifyUser, updateUser);
+
+router.delete('/:id', verifyUser, deleteUser);
+
+router.get('/:id', verifyUser, getUser);
+
+router.get('/', verifyAdmin, getUsers);
+
 
 module.exports = router;
